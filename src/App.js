@@ -1,6 +1,7 @@
 import './App.css';
 import 'bulma/css/bulma.css';
 
+// eslint-disable-next-line no-unused-vars
 import firebase from './FirebaseConfig';
 
 export const App = () => {
