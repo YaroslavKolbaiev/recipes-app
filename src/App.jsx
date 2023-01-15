@@ -40,14 +40,14 @@ export const App = () => {
     startTransition(() => {
       setQuery(event.target.value);
     });
-  }, []);
+  }, [query]);
 
   const handleSearchMemory = useCallback(() => {
     startTransition(() => {
       setFilter(query);
       setQuery('');
     });
-  }, []);
+  }, [filter, query]);
 
   FirebaseAuthService.subscribeToAuthChanges(setUser); // when firebase detects there is change in auth, it's gonna call setUser function with the user passed in
 
