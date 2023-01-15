@@ -1,0 +1,231 @@
+import React, { startTransition, useCallback, useEffect, useMemo, useState } from 'react';
+import './App.css';
+import 'bulma/css/bulma.css';
+import { BounceLoader } from 'react-spinners';
+import { FirebaseAuthService } from './FirebaseAuthService';
+import LoginForm from './components/LoginForm';
+import '@fortawesome/fontawesome-free/css/all.css';
+import { HeaderBlock } from './components/HeaderBlock';
+import AddEditMemory from './components/AddEditMemory';
+import FirebaseFirestoreService from './FirebaseFirestoreService';
+import { MemoriesList } from './components/Memorieslist';
+import { Pagination } from './components/Pagination';
+import { FilterAndSorting } from './components/FilterAndSorting';
+
+export const App = () => {
+  const [user, setUser] = useState(null);
+  const [memories, setMemories] = useState([]);
+  const [currentMemory, setCurrentMemory] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState('');
+  const [query, setQuery] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [memoryPerPage, setMemoryPerPage] = useState(3);
+
+  const visibleMemories = useMemo(() => {
+    return [...memories].sort((memory1, memory2) => {
+      switch (orderBy) {
+        case 'publishDateAsc':
+          return memory1.date.localeCompare(memory2.date);
+        case 'publishDateDesc':
+          return memory2.date.localeCompare(memory1.date);
+        default:
+          return '';
+      }
+    })
+  }, [memories, orderBy]);
+
+  const handleQueryChange = useCallback((event) => {
+    startTransition(() => {
+      setQuery(event.target.value);
+    });
+  }, []);
+
+  const handleSearchMemory = useCallback(() => {
+    startTransition(() => {
+      setFilter(query);
+      setQuery('');
+    });
+  }, []);
+
+  FirebaseAuthService.subscribeToAuthChanges(setUser); // when firebase detects there is change in auth, it's gonna call setUser function with the user passed in
+
+  const handleAddMemorie = useCallback(async(newMemory) => {
+    try {
+      await FirebaseFirestoreService.createDocument(
+        'memories',
+        newMemory,
+      );
+      alert(`Created OK with`);
+      setMemories(prev => [...prev, newMemory]);
+    } catch (error) {
+      alert(error.message);
+    }
+  }, []);
+
+  const handleUpdateMemory = useCallback(async(newMemory, memorieId) => {
+    try {
+      await FirebaseFirestoreService.updateDocument(
+        'memories',
+        memorieId,
+        newMemory,
+      );
+
+      alert('uppdated OK');
+      setMemories(prev => (prev.map(prevItem => (prevItem.id === memorieId
+        ? newMemory
+        : prevItem
+      ))));
+      setCurrentMemory(null);
+    } catch (error) {
+      alert(error.message);
+    }
+  }, []);
+
+  const deleteMemory = useCallback(async(memoryId) => {
+    try {
+      await FirebaseFirestoreService.deleteDocument('memories', memoryId);
+
+      alert('deleted OK');
+      setMemories(prevMemory => prevMemory
+        .filter(memory => memory.id !== memoryId));
+    } catch (error) {
+      alert(error.message);
+    }
+  }, []);
+
+  const handleMemoriesPerPage = useCallback((event) => {
+    const memoriesPerPage = event.target.value;
+
+    setMemories([]);
+    setMemoryPerPage(memoriesPerPage);
+  }, []);
+
+  const handleLoadMoreMemoriesClick = useCallback(() => {
+    const lastMemory = visibleMemories[visibleMemories.length - 1];
+    const cursorId = lastMemory.id;
+
+    startTransition(() => {
+      fetchMemories(cursorId);
+    });
+  }, [memories]);
+
+  async function fetchMemories(cursorId = '') {
+    setLoading(true);
+    const queries = [];
+
+    if (filter) {
+      queries.push({
+        field: 'name',
+        condition: '==',
+        value: filter,
+      });
+    }
+
+    // const orderByField = 'date';
+    // let orderByDirection;
+
+    // if (orderBy) {
+    //   switch (orderBy) {
+    //     case 'publishDateAsc':
+    //       return orderByDirection = 'asc';
+    //     case 'publishDateDesc':
+    //       return orderByDirection = 'desc';
+    //     default:
+    //       return '';
+    //   }
+    // }
+
+    try {
+      const response = await FirebaseFirestoreService.readDocuments({
+        collection: 'memories',
+        queries: queries,
+        perPage: memoryPerPage,
+        cursorId: cursorId,
+        // orderByField: orderByField,
+        // orderByDirection: orderByDirection,
+      });
+
+      const formatedMemories = response.docs.map((memory) => {
+        const { id } = memory;
+        const data = memory.data();
+
+        return { ...data, id };
+      });
+
+      if (cursorId) {
+        setMemories(prev => [...prev, ...formatedMemories]);
+        setLoading(false);
+        return;
+      }
+
+      setMemories(formatedMemories);
+      setLoading(false);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchMemories();
+  }, [user, filter, memoryPerPage]);
+
+  return (
+    <section className="hero is-fullheight hero-background">
+      <div className="hero-head level p-2 header">
+        <div className="level-item">
+          <div className="is-size-3 header-name">Memories</div>
+        </div>
+        <div className="level-item">
+          {user
+            ? <HeaderBlock user={user} />
+            : <LoginForm existingUser={user} />
+          }
+        </div>
+      </div>
+      <FilterAndSorting 
+        query={query}
+        handleQueryChange={handleQueryChange}
+        handleSearchMemory={handleSearchMemory}
+        orderBy={orderBy}
+        setOrderBy={setOrderBy}
+      />
+      <div className="hero-body">
+        {loading
+          ? <div className='bouncer'>
+              <BounceLoader color='#709f9d' size={180} />
+            </div>
+          : (
+            <div className="container">
+              {memories.length
+                ? (
+                  <MemoriesList
+                    memories={visibleMemories}
+                    setCurrentMemory={setCurrentMemory}
+                    deleteMemory={deleteMemory}
+                  />
+                )
+                : <h1 className="title">No Memories Yet</h1>
+              }
+              <Pagination 
+                memoryPerPage={memoryPerPage}
+                handleMemoriesPerPage={handleMemoriesPerPage}
+                handleLoadMoreMemoriesClick={handleLoadMoreMemoriesClick}
+              />
+              {user && (
+                <AddEditMemory
+                  user={user}
+                  handleAddMemorie={handleAddMemorie}
+                  handleUpdateMemory={handleUpdateMemory}
+                  currentMemory={currentMemory}
+                  setCurrentMemory={setCurrentMemory}
+                />
+                )
+              }
+            </div>
+          )
+        }
+      </div>
+    </section>
+  );
+};

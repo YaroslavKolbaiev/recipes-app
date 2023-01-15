@@ -1,5 +1,63 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 .hero-background {
-  background: linear-gradient(90deg, rgba(168,38,84,1) 0%, rgba(253,140,105,1) 100%);
+  background: linear-gradient(120deg, rgba(223,211,187,1) 33%, rgba(245,243,237,1) 100%);
+}
+
+.header-button {
+  background: none;
+  border: none;
+}
+
+.header-button:hover {
+  cursor: pointer;
+}
+
+.header-name {
+  font-family: 'Pacifico', cursive;
+}
+
+.card-body {
+  background-image: url("https://i.pinimg.com/564x/86/b0/98/86b0980ef543191114a946d7d4f1c90a.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+}
+
+.update-button {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  padding: 0;
+}
+
+.update-button:hover {
+  cursor: pointer;
+  transition: 200ms;
+  transform: scale(120%);
+} 
+
+.bouncer {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.filtering-row {
+  display: flex;
+  justify-content: space-around;
+}
+
+.time {
+  position: absolute;
+  bottom: 10px;
+}
+
+.text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
