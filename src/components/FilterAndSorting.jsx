@@ -31,15 +31,15 @@ export const FilterAndSorting = ({
     </div>
     <div className='field'>
       <label className='label'>
-        {lang === 'UA' && 'Сортувати'}
-        {lang === 'EN' && 'Sort'}
+        {lang === 'UA' && 'Дата'}
+        {lang === 'EN' && 'Date'}
       </label>
       <div className='control'>
         <div className="select">
           <select
             className='has-background-warning-light'
-            value={orderBy}
-            onChange={(event) => {
+            defaultValue={orderBy}
+            onChangeCapture={(event) => {
               setOrderBy(event.target.value);
             }}
           >
