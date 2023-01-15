@@ -37,7 +37,7 @@ export const FilterAndSorting = ({
       <div className='control'>
         <div className="select">
           <select
-          className='has-background-warning-light'
+            className='has-background-warning-light'
             value={orderBy}
             onChange={(event) => {
               setOrderBy(event.target.value);

@@ -82,7 +82,6 @@ export default function AddEditMemory({
       );
 
       setImageUrl(downloadUrl);
-      // handleUploadFinish(downloadUrl);
     } catch (error) {
       setUploadProgress(-1);
       fileInputRef.current.value = null;

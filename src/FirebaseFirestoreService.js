@@ -11,17 +11,10 @@ const readDocument = (collection, id) => {
   return firestore.collection(collection).doc(id).get();
 };
 
-const readDocuments = async ({collection, queries, perPage, cursorId }) => {
+const readDocuments = async ({collection, queries, perPage, cursorId, orderByField, orderByDirection }) => {
   let collectionRef = firestore.collection(collection);
 
   if (queries && queries.length > 0) {
-    // for (const query of queries) {
-    //   collectionRef = collectionRef.where(
-    //     query.field,
-    //     query.condition,
-    //     query.value
-    //   );
-    // }
     queries.forEach((query) => {
       collectionRef = collectionRef.where(
         query.field,
@@ -31,9 +24,9 @@ const readDocuments = async ({collection, queries, perPage, cursorId }) => {
     });
   };
 
-  // if (orderByField && orderByDirection) {
-  //   collectionRef = collectionRef.orderBy(orderByField, orderByDirection);
-  // };
+  if (orderByField && orderByDirection) {
+    collectionRef = collectionRef.orderBy(orderByField, orderByDirection);
+  };
 
   if (perPage) {
     collectionRef = collectionRef.limit(perPage);

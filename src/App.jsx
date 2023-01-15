@@ -23,19 +23,6 @@ export const App = () => {
   const [memoryPerPage, setMemoryPerPage] = useState('');
   const [lang, setLang] = useState('UA');
 
-  const visibleMemories = useMemo(() => {
-    return [...memories].sort((memory1, memory2) => {
-      switch (orderBy) {
-        case 'publishDateAsc':
-          return memory1.date.localeCompare(memory2.date);
-        case 'publishDateDesc':
-          return memory2.date.localeCompare(memory1.date);
-        default:
-          return '';
-      }
-    })
-  }, [memories, orderBy]);
-
   const handleQueryChange = useCallback((event) => {
     startTransition(() => {
       setQuery(event.target.value);
@@ -103,7 +90,7 @@ export const App = () => {
   }, []);
 
   const handleLoadMoreMemoriesClick = useCallback(() => {
-    const lastMemory = visibleMemories[visibleMemories.length - 1];
+    const lastMemory = memories[memories.length - 1];
     const cursorId = lastMemory.id;
 
     startTransition(() => {
@@ -123,19 +110,21 @@ export const App = () => {
       });
     }
 
-    // const orderByField = 'date';
-    // let orderByDirection;
+    const orderByField = 'name';
+    let orderByDirection;
 
-    // if (orderBy) {
-    //   switch (orderBy) {
-    //     case 'publishDateAsc':
-    //       return orderByDirection = 'asc';
-    //     case 'publishDateDesc':
-    //       return orderByDirection = 'desc';
-    //     default:
-    //       return '';
-    //   }
-    // }
+    if (orderBy) {
+      switch (orderBy) {
+        case 'publishDateAsc':
+          orderByDirection = "asc";
+          break;
+        case 'publishDateDesc':
+          orderByDirection = "desc";
+          break;
+        default:
+          break;
+      }
+    }
 
     try {
       const response = await FirebaseFirestoreService.readDocuments({
@@ -143,8 +132,8 @@ export const App = () => {
         queries: queries,
         perPage: memoryPerPage,
         cursorId: cursorId,
-        // orderByField: orderByField,
-        // orderByDirection: orderByDirection,
+        orderByField: orderByField,
+        orderByDirection: orderByDirection,
       });
 
       const formatedMemories = response.docs.map((memory) => {
@@ -169,7 +158,7 @@ export const App = () => {
 
   useEffect(() => {
     fetchMemories();
-  }, [user, filter, memoryPerPage]);
+  }, [user, filter, memoryPerPage, orderBy]);
 
   return (
     <section className="hero is-fullheight hero-background">
@@ -231,7 +220,7 @@ export const App = () => {
               {memories.length
                 ? (
                   <MemoriesList
-                    memories={visibleMemories}
+                    memories={memories}
                     setCurrentMemory={setCurrentMemory}
                     deleteMemory={deleteMemory}
                   />
