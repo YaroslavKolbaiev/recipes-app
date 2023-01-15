@@ -20,7 +20,8 @@ export const App = () => {
   const [filter, setFilter] = useState('');
   const [query, setQuery] = useState('');
   const [orderBy, setOrderBy] = useState('');
-  const [memoryPerPage, setMemoryPerPage] = useState(3);
+  const [memoryPerPage, setMemoryPerPage] = useState('');
+  const [lang, setLang] = useState('UA');
 
   const visibleMemories = useMemo(() => {
     return [...memories].sort((memory1, memory2) => {
@@ -172,14 +173,43 @@ export const App = () => {
 
   return (
     <section className="hero is-fullheight hero-background">
+      <div className="lang-select">
+          <div className='buttons are-small'>
+            <button 
+              className='button p-0 is-ghost has-text-dark'
+              type='button'
+              onClick={() => {
+                startTransition(() => {
+                  setLang('EN');
+                });
+              }}
+            >
+              EN
+            </button>
+            <button 
+              className='button p-0 is-ghost has-text-dark'
+              type='button'
+              onClick={() => {
+                startTransition(() => {
+                  setLang('UA');
+                });
+              }}
+            >
+              UA
+            </button>
+          </div>
+        </div>
       <div className="hero-head level p-2 header">
         <div className="level-item">
-          <div className="is-size-3 header-name">Memories</div>
+          <div className="is-size-3 header-name">
+            {lang === 'UA' && 'Спогади'}
+            {lang === 'EN' && 'Memories'}
+          </div>
         </div>
         <div className="level-item">
           {user
-            ? <HeaderBlock user={user} />
-            : <LoginForm existingUser={user} />
+            ? <HeaderBlock lang={lang} user={user} />
+            : <LoginForm lang={lang} />
           }
         </div>
       </div>
@@ -189,10 +219,11 @@ export const App = () => {
         handleSearchMemory={handleSearchMemory}
         orderBy={orderBy}
         setOrderBy={setOrderBy}
+        lang={lang}
       />
       <div className="hero-body">
         {loading
-          ? <div className='bouncer'>
+          ? <div className='is-flex is-justify-content-center is-flex-grow-1'>
               <BounceLoader color='#709f9d' size={180} />
             </div>
           : (
@@ -211,6 +242,7 @@ export const App = () => {
                 memoryPerPage={memoryPerPage}
                 handleMemoriesPerPage={handleMemoriesPerPage}
                 handleLoadMoreMemoriesClick={handleLoadMoreMemoriesClick}
+                lang={lang}
               />
               {user && (
                 <AddEditMemory
@@ -219,12 +251,17 @@ export const App = () => {
                   handleUpdateMemory={handleUpdateMemory}
                   currentMemory={currentMemory}
                   setCurrentMemory={setCurrentMemory}
+                  lang={lang}
                 />
                 )
               }
             </div>
           )
         }
+      </div>
+      <div className='hero-foot has-text-centered p-4 footer-name'>
+        {lang === 'UA' && 'Створенно Ярославом Колбаєвим'}
+        {lang === 'EN' && 'Created by Yarosalv Kolbaiev'}
       </div>
     </section>
   );

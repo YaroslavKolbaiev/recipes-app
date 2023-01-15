@@ -4,11 +4,15 @@ export const FilterAndSorting = ({
   handleSearchMemory,
   orderBy,
   setOrderBy,
+  lang
 }) => {
   return (
-  <div className='filtering-row'>
+  <div className='is-flex is-justify-content-space-around'>
     <div className='field'>
-      <label className='label'>Find Memory</label>
+      <label className='label'>
+        {lang === 'UA' && 'Знайти Cпогад'}
+        {lang === 'EN' && 'Find Memory'}
+      </label>
       <div className='control level is-mobile'>
         <input 
           value={query}
@@ -20,12 +24,16 @@ export const FilterAndSorting = ({
           onClick={handleSearchMemory} 
           className='button is-dark'
         >
-          Search
+          {lang === 'UA' && 'Знайти'}
+          {lang === 'EN' && 'Search'}
         </button>
       </div>
     </div>
     <div className='field'>
-      <label className='label'>Sort Memories</label>
+      <label className='label'>
+        {lang === 'UA' && 'Сортувати'}
+        {lang === 'EN' && 'Sort'}
+      </label>
       <div className='control'>
         <div className="select">
           <select
@@ -35,9 +43,18 @@ export const FilterAndSorting = ({
               setOrderBy(event.target.value);
             }}
           >
-            <option value="">Sort By</option>
-            <option value="publishDateDesc">Desc</option>
-            <option value="publishDateAsc">Asc</option>
+            <option value="">
+              {lang === 'UA' && 'Виберіть'}
+              {lang === 'EN' && 'Sort by'}
+            </option>
+            <option value="publishDateDesc">
+              {lang === 'UA' && 'За спаданням'}
+              {lang === 'EN' && 'Desc'}
+            </option>
+            <option value="publishDateAsc">
+              {lang === 'UA' && 'За зростанням'}
+              {lang === 'EN' && 'Asc'}
+            </option>
           </select>
         </div>
       </div>

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
 
 .hero-background {
   background: linear-gradient(120deg, rgba(223,211,187,1) 33%, rgba(245,243,237,1) 100%);
@@ -38,17 +39,6 @@
   transform: scale(120%);
 } 
 
-.bouncer {
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
-}
-
-.filtering-row {
-  display: flex;
-  justify-content: space-around;
-}
-
 .time {
   position: absolute;
   bottom: 10px;
@@ -56,8 +46,21 @@
 
 .text {
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow-y: scroll;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+}
+
+.text::-webkit-scrollbar {
+  display: none;
+}
+
+.lang-select {
+  position: absolute;
+  right: 10px;
+}
+
+.footer-name {
+  font-family: 'Shadows Into Light', cursive;
 }

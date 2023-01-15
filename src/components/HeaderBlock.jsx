@@ -2,7 +2,7 @@
 import React from 'react';
 import { FirebaseAuthService } from '../FirebaseAuthService';
 
-export const HeaderBlock = ({ user }) => {
+export const HeaderBlock = ({ user, lang }) => {
   function handleLogOut() {
     FirebaseAuthService.logOutUser();
   }
@@ -18,9 +18,10 @@ export const HeaderBlock = ({ user }) => {
         {user
           && (
           <div>
-            welcome
+            {lang === 'UA' && 'Ласкаво Просимо'}
+            {lang === 'EN' && 'Welcome'}
             {' '}
-            {user.email}
+            <span className='has-text-warning-dark'>{user.email}</span>
             <button
               type="button"
               className="header-button"

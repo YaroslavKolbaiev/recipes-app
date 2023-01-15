@@ -10,6 +10,7 @@ export default function AddEditMemory({
   handleUpdateMemory,
   currentMemory,
   setCurrentMemory,
+  lang
 }) {
   const [name, setName] = useState(''); 
   const [date, setDate] = useState(
@@ -97,20 +98,35 @@ export default function AddEditMemory({
     setUploadProgress(-1);
   }
 
+  const langSelector = (ua, en) => {
+    if (lang === 'UA') {
+      return ua;
+    }
+
+    if (lang === 'EN') {
+      return en
+    }
+  }
+
   return (
     <div className="columns is-centered">
       <div className="column is-half">
         <form
-          className="box has-background-info-light"
+          className="box has-background-warning-light"
           onSubmit={handleOnSubmit}
         >
           <h1 className="is-size-5 has-text-centered has-text-weight-semibold">
-            {currentMemory ? 'Update Memory' : 'Add a New Memory'}
+            {currentMemory 
+              ? langSelector('Оновити спогад', 'Update Memory')
+              : langSelector('Створити новий спогад', 'Add a New Memory')
+            }
           </h1>
           <div className="field has-addons">
             <div className="control">
               <button type="button" className="button is-static">
-                <p className="is-size-7">Memory Name</p>
+                <p className="is-size-7">
+                  {langSelector('Назва','Memory Name')}
+                </p>
               </button>
             </div>
             <div className="control is-expanded">
@@ -127,7 +143,9 @@ export default function AddEditMemory({
           <div className="field has-addons">
             <div className="control">
               <button type="button" className="button is-static">
-                <p className="is-size-7">Date</p>
+                <p className="is-size-7">
+                  {langSelector('Дата' ,'Date')}
+                </p>
               </button>
             </div>
             <div className="control is-expanded">
@@ -148,7 +166,7 @@ export default function AddEditMemory({
               setText(event.target.value);
             }}
             className="textarea has-background-warning-light mb-2"
-            placeholder="Tell your story"
+            placeholder={langSelector('коротке описання' ,'Tell your story')}
           />
 
           <div className='file is-dark mb-2'>
@@ -165,7 +183,9 @@ export default function AddEditMemory({
                 <span className='file-icon'>
                   <i className="fa-solid fa-upload"></i>
                 </span>
-                <span className='file-label'>Upload File</span>
+                <span className='file-label'>
+                  {langSelector('Звантажити фото' ,'Upload File')}
+                </span>
               </span>
             </label>
           </div>
@@ -194,7 +214,10 @@ export default function AddEditMemory({
               type="submit"
               className="button is-dark"
             >
-              {currentMemory ? 'Update Memory' : 'Create Memory'}
+              {currentMemory 
+                ? langSelector('Оновити спогад' ,'Update Memory') 
+                : langSelector('Створити Спогад' ,'Create Memory')
+              }
             </button>
             {
               currentMemory

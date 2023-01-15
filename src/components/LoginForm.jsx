@@ -2,15 +2,27 @@
 import React, { useState } from 'react';
 import { FirebaseAuthService } from '../FirebaseAuthService';
 
-export default function LoginForm() {
+export default function LoginForm({ lang }) {
   const [userName, setUserame] = useState('');
   const [password, setPassword] = useState('');
 
-  async function handleSubmit(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
     try {
       await FirebaseAuthService.loginUser(userName, password);
+      setUserame('');
+      setPassword('');
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  async function handleRegisterUser(event) {
+    event.preventDefault();
+
+    try {
+      await FirebaseAuthService.registerUser(userName, password);
       setUserame('');
       setPassword('');
     } catch (error) {
@@ -33,16 +45,16 @@ export default function LoginForm() {
     }
   }
 
-  async function handleLoginWithGoogle() {
-    try {
-      await FirebaseAuthService.logInWithGoogle();
-    } catch (error) {
-      alert(error.message);
-    }
-  }
+  // async function handleLoginWithGoogle() {
+  //   try {
+  //     await FirebaseAuthService.logInWithGoogle();
+  //   } catch (error) {
+  //     alert(error.message);
+  //   }
+  // }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleLogin}>
       <div className="field">
         <p className="control has-icons-left has-icons-right">
           <input
@@ -79,25 +91,35 @@ export default function LoginForm() {
       </div>
       <div className="buttons m-0">
         <button
-          className="button is-small is-link is-light is-rounded"
+          className="button is-small is-dark is-rounded"
           type="submit"
         >
-          Log In
+          {lang === 'UA' && 'Увійти'}
+          {lang === 'EN' && 'Sign In'}
         </button>
         <button
+          className="button is-small is-dark is-rounded"
+          type="button"
+          onClick={handleRegisterUser}
+        >
+          {lang === 'UA' && 'Зареєструватися'}
+          {lang === 'EN' && 'Sign Up'}
+        </button>
+        {/* <button
           className="button is-small is-link is-light is-rounded"
           type="button"
           onClick={handleLoginWithGoogle}
         >
           Log In With Google
-        </button>
+        </button> */}
       </div>
       <button
         type="button"
-        className="button is-ghost p-0"
+        className="button is-ghost p-0 has-text-dark is-fullwidth"
         onClick={handleSendResetPasswordEmail}
       >
-        Reset password
+        {lang === 'UA' && 'Скинути пароль'}
+        {lang === 'EN' && 'Reset Password'}
       </button>
     </form>
   );
