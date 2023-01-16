@@ -207,7 +207,6 @@ export const App = () => {
           query={query}
           handleQueryChange={handleQueryChange}
           handleSearchMemory={handleSearchMemory}
-          orderBy={orderBy}
           setOrderBy={setOrderBy}
           lang={lang}
         />

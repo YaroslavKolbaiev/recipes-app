@@ -5,7 +5,6 @@ export const FilterAndSorting = ({
   query,
   handleQueryChange,
   handleSearchMemory,
-  // orderBy,
   setOrderBy,
   lang
 }) => {
@@ -45,36 +44,6 @@ export const FilterAndSorting = ({
         </button>
       </div>
     </div>
-    {/* <div className='field'>
-      <label className='label'>
-        {lang === 'UA' && 'Дата'}
-        {lang === 'EN' && 'Date'}
-      </label>
-      <div className='control'>
-        <div className="select">
-          <select
-            className='has-background-warning-light'
-            defaultValue={orderBy}
-            onChangeCapture={(event) => {
-              setOrderBy(event.target.value);
-            }}
-          >
-            <option value="">
-              {lang === 'UA' && 'Виберіть'}
-              {lang === 'EN' && 'Sort by'}
-            </option>
-            <option value="publishDateDesc">
-              {lang === 'UA' && 'За спаданням'}
-              {lang === 'EN' && 'Desc'}
-            </option>
-            <option value="publishDateAsc">
-              {lang === 'UA' && 'За зростанням'}
-              {lang === 'EN' && 'Asc'}
-            </option>
-          </select>
-        </div>
-      </div>
-    </div> */}
     <div className={classNames(
       'dropdown is-felx is-align-items-flex-end',
       {'is-active': dropdownIsActive})}
@@ -90,7 +59,6 @@ export const FilterAndSorting = ({
           }}
         >
           <span>
-            {/* {langSelector('Сортування за датою', 'Sort by Date')} */}
             {sortType}
           </span>
           <span className="icon is-small">
