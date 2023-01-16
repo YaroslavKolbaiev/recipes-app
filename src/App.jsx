@@ -202,14 +202,16 @@ export const App = () => {
           }
         </div>
       </div>
-      <FilterAndSorting 
-        query={query}
-        handleQueryChange={handleQueryChange}
-        handleSearchMemory={handleSearchMemory}
-        orderBy={orderBy}
-        setOrderBy={setOrderBy}
-        lang={lang}
-      />
+      <div className='container'>
+        <FilterAndSorting 
+          query={query}
+          handleQueryChange={handleQueryChange}
+          handleSearchMemory={handleSearchMemory}
+          orderBy={orderBy}
+          setOrderBy={setOrderBy}
+          lang={lang}
+        />
+      </div>
       <div className="hero-body">
         {loading
           ? <div className='is-flex is-justify-content-center is-flex-grow-1'>
