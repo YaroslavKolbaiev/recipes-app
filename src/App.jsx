@@ -85,8 +85,10 @@ export const App = () => {
   const handleMemoriesPerPage = useCallback((event) => {
     const memoriesPerPage = event.target.value;
 
-    setMemories([]);
-    setMemoryPerPage(memoriesPerPage);
+    startTransition(() => {
+      setMemories([]);
+      setMemoryPerPage(memoriesPerPage);
+    })
   }, []);
 
   const handleLoadMoreMemoriesClick = useCallback(() => {
