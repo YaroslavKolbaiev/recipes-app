@@ -26,6 +26,8 @@ export const Pagination = ({
     <div className="is-flex is-flex-direction-column is-align-items-center">
       <div className="select">
         <select
+          id="numberOfPages"
+          name="numberOfPages"
           className="has-background-warning-light"
           value={memoryPerPage}
           onChange={handleMemoriesPerPage}
