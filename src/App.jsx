@@ -23,19 +23,6 @@ export const App = () => {
   const [memoryPerPage, setMemoryPerPage] = useState('');
   const [lang, setLang] = useState('UA');
 
-  const handleQueryChange = useCallback((event) => {
-    startTransition(() => {
-      setQuery(event.target.value);
-    });
-  }, [query]);
-
-  const handleSearchMemory = useCallback(() => {
-    startTransition(() => {
-      setFilter(query);
-      setQuery('');
-    });
-  }, [filter, query]);
-
   FirebaseAuthService.subscribeToAuthChanges(setUser); // when firebase detects there is change in auth, it's gonna call setUser function with the user passed in
 
   const handleAddMemorie = useCallback(async(newMemory) => {
@@ -206,9 +193,6 @@ export const App = () => {
       </div>
       <div className='container'>
         <FilterAndSorting 
-          query={query}
-          handleQueryChange={handleQueryChange}
-          handleSearchMemory={handleSearchMemory}
           setOrderBy={setOrderBy}
           lang={lang}
         />

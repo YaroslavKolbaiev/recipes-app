@@ -2,9 +2,6 @@ import classNames from "classnames";
 import { startTransition, useRef, useState } from "react";
 
 export const FilterAndSorting = ({ 
-  query,
-  handleQueryChange,
-  handleSearchMemory,
   setOrderBy,
   lang
 }) => {
@@ -23,27 +20,6 @@ export const FilterAndSorting = ({
   const idAsc = useRef();
   return (
   <div className='is-flex-tablet'>
-    <div className='field mb-0 mr-3'>
-      <label className='label'>
-        {lang === 'UA' && 'Знайти Cпогад'}
-        {lang === 'EN' && 'Find Memory'}
-      </label>
-      <div className='control level is-mobile'>
-        <input 
-          value={query}
-          className='input has-background-warning-light'
-          onChange={handleQueryChange}
-        />
-        <button 
-          type='button'
-          onClick={handleSearchMemory} 
-          className='button is-dark'
-        >
-          {lang === 'UA' && 'Знайти'}
-          {lang === 'EN' && 'Search'}
-        </button>
-      </div>
-    </div>
     <div className={classNames(
       'dropdown is-felx is-align-items-flex-end',
       {'is-active': dropdownIsActive})}
