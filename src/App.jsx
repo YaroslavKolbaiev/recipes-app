@@ -17,8 +17,6 @@ export const App = () => {
   const [memories, setMemories] = useState([]);
   const [currentMemory, setCurrentMemory] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState('');
-  const [query, setQuery] = useState('');
   const [orderBy, setOrderBy] = useState('');
   const [memoryPerPage, setMemoryPerPage] = useState('');
   const [lang, setLang] = useState('UA');
@@ -91,14 +89,6 @@ export const App = () => {
     setLoading(true);
     const queries = [];
 
-    if (filter) {
-      queries.push({
-        field: 'name',
-        condition: '==',
-        value: filter,
-      });
-    }
-
     const orderByField = 'name';
     let orderByDirection;
 
@@ -123,6 +113,7 @@ export const App = () => {
         cursorId: cursorId,
         orderByField: orderByField,
         orderByDirection: orderByDirection,
+
       });
 
       const formatedMemories = response.docs.map((memory) => {
@@ -147,7 +138,7 @@ export const App = () => {
 
   useEffect(() => {
     fetchMemories();
-  }, [user, filter, memoryPerPage, orderBy]);
+  }, [user, memoryPerPage, orderBy]);
 
   return (
     <section className="hero is-fullheight hero-background">
@@ -234,10 +225,6 @@ export const App = () => {
             </div>
           )
         }
-      </div>
-      <div className='hero-foot has-text-centered p-4 footer-name'>
-        {lang === 'UA' && 'Створенно Ярославом Колбаєвим'}
-        {lang === 'EN' && 'Created by Yarosalv Kolbaiev'}
       </div>
     </section>
   );
