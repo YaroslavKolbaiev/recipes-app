@@ -45,14 +45,6 @@ export default function LoginForm({ lang }) {
     }
   }
 
-  // async function handleLoginWithGoogle() {
-  //   try {
-  //     await FirebaseAuthService.logInWithGoogle();
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // }
-
   return (
     <form onSubmit={handleLogin}>
       <div className="field">
