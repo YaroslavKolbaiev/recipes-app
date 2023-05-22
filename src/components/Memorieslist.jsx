@@ -1,8 +1,8 @@
-import React, { startTransition } from 'react';
+import React, { startTransition } from "react";
 
 export const MemoriesList = ({ memories, setCurrentMemory, deleteMemory }) => {
   const onEditMemoryClick = (memoryId) => {
-    const selectedMemory = memories.find(memory => memory.id === memoryId);
+    const selectedMemory = memories.find((memory) => memory.id === memoryId);
 
     if (selectedMemory) {
       startTransition(() => {
@@ -14,24 +14,20 @@ export const MemoriesList = ({ memories, setCurrentMemory, deleteMemory }) => {
 
   return (
     <div className="columns is-multiline">
-      {memories.map(memorie => (
+      {memories.map((memorie) => (
         <div key={memorie.id} className="column is-one-third">
-          <div className="card card-body">
+          <div style={{ height: "480px" }} className="card card-body">
             <div className="card-image">
               <figure className="image">
-              <button
+                <button
                   className="delete"
-                  style={{ position: 'absolute' }}
+                  style={{ position: "absolute" }}
                   type="button"
                   onClick={() => {
                     deleteMemory(memorie.id);
                   }}
                 />
-                <img
-                  src={memorie.imageUrl}
-                  alt="Img"
-                />
-                
+                <img src={memorie.imageUrl} alt="Img" />
               </figure>
             </div>
             <div className="card-content">
@@ -50,20 +46,11 @@ export const MemoriesList = ({ memories, setCurrentMemory, deleteMemory }) => {
                 <div className="media-content">
                   <p className="title is-3">{memorie.name}</p>
                   <p className="subtitle is-6 mb-0">
-                    @
-                    {memorie.author.split('@')[0]}
+                    @{memorie.author.split("@")[0]}
                   </p>
                   <hr className="mb-1 mt-2 has-background-grey-light" />
-                  <p 
-                    className='mb-2 text'
-                  >
-                    {memorie.text}
-                  </p>
-                  <time className='time'>
-                    Date:
-                    {' '}
-                    {memorie.date.toString()}
-                  </time>
+                  <p className="mb-2 text">{memorie.text}</p>
+                  <time className="time">Date: {memorie.date.toString()}</time>
                 </div>
               </div>
             </div>
