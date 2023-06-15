@@ -1,1 +1,1 @@
-# App for posting pictures
+# Test app for posting pictures
